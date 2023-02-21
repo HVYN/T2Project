@@ -9,6 +9,8 @@ const ASSETS = {
 	'bootstrap.min.css.map': { url: '/node_modules/bootstrap/dist/css/bootstrap.min.css.map', type: 'application/json' },
 	'bootstrap.min.js': { url: '/node_modules/bootstrap/dist/js/bootstrap.min.js', type: 'text/javascript' },
 	'bootstrap.min.js.map': { url: '/node_modules/bootstrap/dist/js/bootstrap.min.js.map', type: 'application/json' },
+	'logo.png': { url: '/logo w name.png', type: 'image/png' },
+	'favicon.ico': { url: '/favicon_io/favicon.ico', type: 'image/x-icon' },
 };
 
 function createPage(content) {
