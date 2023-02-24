@@ -9,13 +9,15 @@ const ASSETS = {
 	'bootstrap.min.css.map': { url: '/node_modules/bootstrap/dist/css/bootstrap.min.css.map', type: 'application/json' },
 	'bootstrap.min.js': { url: '/node_modules/bootstrap/dist/js/bootstrap.min.js', type: 'text/javascript' },
 	'bootstrap.min.js.map': { url: '/node_modules/bootstrap/dist/js/bootstrap.min.js.map', type: 'application/json' },
-	'logo.png': { url: '/logo w name.png', type: 'image/png' },
+	'logo.png' : { url: '/logo.png', type: 'image/png'},
 	'favicon.ico': { url: '/favicon_io/favicon.ico', type: 'image/x-icon' },
+	'stockphoto.png' : { url: '/stockphoto.png', type: 'image/png'}
 };
 
 function createPage(content) {
 	let header = fs.readFileSync(__dirname + '/header.html', 'utf8');
 	let footer = fs.readFileSync(__dirname + '/footer.html', 'utf8');
+	let tutors = fs.readFileSync(__dirname + '/tutors.html', 'utf-8')
 	let page = `<!DOCTYPE html><html>${header}${content}${footer}</html>`;
 	page = page.replaceAll('{{dir}}', __dirname);
 	return page;
@@ -38,6 +40,22 @@ const requestListener = function (req, res) {
 		return;
 	}
 
+	if (url == 'tutors.html')
+	{
+		fs.readFile(__dirname + '/tutors.html', (err, data) => {
+			if (err)
+			{
+				res.writeHead(404);
+				res.end(JSON.stringify(err));
+				return;
+			}
+			res.setHeader('Content-Type', 'text/html');
+			res.writeHead(200);
+			res.end(createPage(data));
+		});
+		return;
+	}
+
 	if (url == '' || url == 'index.html') {
 		fs.readFile(__dirname + '/index.html', (err, data) => {
 			if (err) {
@@ -51,6 +69,7 @@ const requestListener = function (req, res) {
 		});
 		return;
 	}
+
 	console.log(`Unknown url: "${url}"`);
 };
 
