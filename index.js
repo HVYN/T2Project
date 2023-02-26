@@ -11,7 +11,9 @@ const ASSETS = {
 	'bootstrap.min.js.map': { url: '/node_modules/bootstrap/dist/js/bootstrap.min.js.map', type: 'application/json' },
 	'logo.png' : { url: '/logo.png', type: 'image/png'},
 	'favicon.ico': { url: '/favicon_io/favicon.ico', type: 'image/x-icon' },
-	'stockphoto.png' : { url: '/stockphoto.png', type: 'image/png'}
+	'stockphoto.png' : { url: '/stockphoto.png', type: 'image/png'},
+	'grayBg.png' : {url: '/grayBg.png', type: 'image/png'},
+	'orangeBg.png' : {url: '/orangeBg.png', type: 'image/png'}
 };
 
 function createPage(content) {
