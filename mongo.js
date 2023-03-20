@@ -7,7 +7,7 @@
 const {MongoClient} = require('mongodb');
 
 //	MONGODB CONNECTION STRING (URI)
-const mongoConnection = "mongodb+srv://gmaster234:8OvIsqflM7POC5Dx@t2-project-cluster.yya5asd.mongodb.net/?retryWrites=true&w=majority"
+const mongoConnection = "mongodb+srv://<username>:<password>@t2-project-cluster.yya5asd.mongodb.net/?retryWrites=true&w=majority"
 
 const mongoClient = new MongoClient(mongoConnection)
 
