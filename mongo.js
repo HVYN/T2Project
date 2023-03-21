@@ -44,9 +44,9 @@ async function getAllTutors()
         .collection('tutors')
         .find();
 
-    const databaseItems = await tutors.toArray();
+    const tutorsArray = await tutors.toArray();
 
-    return databaseItems;
+    return tutorsArray;
 }
 
 //	TEST: DISPLAY A SPECIFIC TUTOR
@@ -65,6 +65,18 @@ async function getTutor(id)
 	return tutor;
 }
 
+//	TEST: DISPLAY ALL RESERVATIONS
+async function getAllReservations()
+{
+	const reservations = await mongoClient.db('tutor-application')
+		.collection('reservations')
+		.find();
+
+	const reservationsArray = await reservations.toArray();
+
+	return reservationsArray;
+}
+
 //	TEST: MONGODB STUFF - LIST ALL DATABASES
 async function listDatabases(client)
 {
@@ -75,6 +87,6 @@ async function listDatabases(client)
 }
 
 //  EXPORT THIS SO IT'S USABLE BY index.js
-exports.mongoInit = mongoInit;
 exports.getAllTutors = getAllTutors;
 exports.getTutor = getTutor;
+exports.getAllReservations = getAllReservations;

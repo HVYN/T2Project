@@ -33,6 +33,7 @@ const ASSETS = {
 };
 */
 
+/*
 //	CREATEPAGE ALWAYS LOADS FOOTER AND HEADER
 //	THE ACTUAL PAGE WILL BE LOADED AS NEEDED
 function createPage(content) 
@@ -46,6 +47,7 @@ function createPage(content)
 	page = page.replaceAll('{{dir}}', __dirname);
 	return page;
 }
+*/
 
 /*
 //	WHAT THE USER CLICKS ON, THEIR 'REQUESTS' ARE SENT HERE TO BE
@@ -129,25 +131,27 @@ expressApp.use(express.static(__dirname + '/css'));
 
 // TEST: EXPRESS - HANDLE HOMEPAGE
 expressApp.get('/', (req, res) => {
+	/*
 	fs.readFile(__dirname + '/index.html', (err, data) => {
 		if(err) {
 			res.status(404).end(JSON.stringify(err));
 		}	
+		
 
 		res.setHeader('Content-Type', 'text/html');
 		res.status(200).end(createPage(data));
 	})
+	*/
+
+	res.render('index');
 })
 
 // TEST: EXPRESS - DISPLAY ALL TUTORS
 expressApp.get('/tutors', (req, res) => {
-
-	//	GET ALL DATABASE ITEMS (tutor-application)
+	//	GET ALL TUTORS (tutor-application -> tutors)
 	const tutors = mongo.getAllTutors();
 
 	tutors.then(function(result) {
-		console.log(result);
-
 		//	DISPLAY PAGE using pug
 		res.render('tutors', { tutors: result});
 
@@ -194,9 +198,28 @@ expressApp.get('/tutors/:id/', (req, res) => {
 	});
 });
 
+//	EXPRESS - DISPLAY ALL RESERVATIONS
+expressApp.get('/reservations', (req, res) => {
+	//	GET ALL RESERVATIONS (tutor-application -> reservations)
+	const reservations = mongo.getAllReservations();
+
+	reservations.then(function(result) {
+		//	DISPLAY PAGE using pug
+		res.render('reservations', { reservations: result});
+	});
+
+})
+
+//	FLESH OUT ERROR CATCHING SYSTEM LATER
+//	ERROR PAGE TO CATCH BAD REQUESTS
+expressApp.all('*', function(req, res) {
+	res.render('error');
+
+});
+
 //	ERROR PAGE MIDDLEWARE
 expressApp.use((err, req, res, next) => {
-	res.status(500).render('error');
+	res.render('error');
 });
 
 /*

@@ -1,4 +1,4 @@
-//  TUTORS PAGE USING PUG
+//  RESERVATIONS PAGE USING PUG
 //  NOTE: BE CAREFUL OF SPACING ISSUES WITH PUG
 
 html 
@@ -6,10 +6,10 @@ html
     body(style={background: '#bababa'})
         .container
             ul(class='list-group mt-1')
-                each tutor, i in tutors 
+                each reservation, i in reservations 
                     li(class='list-group-item my-1')
-                        h5= tutor.name
-                        p= tutor.subjects
-                        // p= tutor.availability
+                        h5= `Tutor: ${reservation.tutor}`
+                        h5= `Student: ${reservation.student}`
+                        p= reservation.subject
 footer
     include ../footer.html
