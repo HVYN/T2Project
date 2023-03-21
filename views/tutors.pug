@@ -1,19 +1,14 @@
 //  TUTORS PAGE USING PUG
-//  NOTE: BE CAREFUL OF SPACING ISSUES
+//  NOTE: BE CAREFUL OF SPACING ISSUES WITH PUG
 
 html 
     include ../header.html
-    body 
-        ul.list-group 
+    body(style={background: '#bababa'})
+        ul(class='list-group mt-1')
             each tutor, i in tutors 
-                li.list-group-item
+                li(class='list-group-item my-1 mx-5')
                     h5= tutor.name
                     p= tutor.subjects
-                    p= tutor.availability
-
+                    // p= tutor.availability
 footer
     include ../footer.html
-
-style 
-    body 
-        background-color: #bababa

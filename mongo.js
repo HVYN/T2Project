@@ -3,11 +3,15 @@
     Separate .js file that handles MongoDB stuff
 */
 
+//  USERNAME AND PASSWORD
+username = 'gmaster234'
+password = '8OvIsqflM7POC5Dx'
+
 //	TEST: MONGODB STUFF
 const {MongoClient} = require('mongodb');
 
 //	MONGODB CONNECTION STRING (URI)
-const mongoConnection = "mongodb+srv://<username>:<password>@t2-project-cluster.yya5asd.mongodb.net/?retryWrites=true&w=majority"
+const mongoConnection = `mongodb+srv://${username}:${password}@t2-project-cluster.yya5asd.mongodb.net/?retryWrites=true&w=majority`
 
 const mongoClient = new MongoClient(mongoConnection)
 
@@ -33,16 +37,32 @@ async function mongoInit()
 
 }
 
-//  TEST: DISPLAY TUTOR-APPLICATION DATABASE
+//  TEST: DISPLAY ALL TUTORS
 async function getAllTutors()
 {
-    const database = await mongoClient.db('tutor-application')
+    const tutors = await mongoClient.db('tutor-application')
         .collection('tutors')
         .find();
 
-    const databaseItems = await database.toArray();
+    const databaseItems = await tutors.toArray();
 
     return databaseItems;
+}
+
+//	TEST: DISPLAY A SPECIFIC TUTOR
+async function getTutor(id)
+{
+	console.log(typeof parseInt(id))
+
+	const tutor = await mongoClient.db('tutor-application')
+		.collection('tutors')
+		.findOne({ user_id: parseInt(id)});
+
+	// const tutorArray = await tutor.toArray();
+
+	// console.log(tutorArray)
+
+	return tutor;
 }
 
 //	TEST: MONGODB STUFF - LIST ALL DATABASES
@@ -57,3 +77,4 @@ async function listDatabases(client)
 //  EXPORT THIS SO IT'S USABLE BY index.js
 exports.mongoInit = mongoInit;
 exports.getAllTutors = getAllTutors;
+exports.getTutor = getTutor;

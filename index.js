@@ -47,19 +47,6 @@ function createPage(content)
 	return page;
 }
 
-//	TEST: DISPLAY TUTORS FROM /GET REQUEST
-function createTutorPage(content)
-{
-	let header = fs.readFileSync(__dirname + '/header.html', 'utf8');
-	let footer = fs.readFileSync(__dirname + '/footer.html', 'utf8');
-
-	let page = `<!DOCTYPE html><html>
-				${header}${content}${footer}
-				</html>`;
-	page = page.replaceAll('{{dir}}', __dirname);
-	return page;
-}
-
 /*
 //	WHAT THE USER CLICKS ON, THEIR 'REQUESTS' ARE SENT HERE TO BE
 //	INTERPRETED, AND REDIRECTED
@@ -152,13 +139,13 @@ expressApp.get('/', (req, res) => {
 	})
 })
 
-// TEST: EXPRESS - HANDLE TUTORS
+// TEST: EXPRESS - DISPLAY ALL TUTORS
 expressApp.get('/tutors', (req, res) => {
 
 	//	GET ALL DATABASE ITEMS (tutor-application)
-	const databaseItems = mongo.getAllTutors();
+	const tutors = mongo.getAllTutors();
 
-	databaseItems.then(function(result) {
+	tutors.then(function(result) {
 		console.log(result);
 
 		//	DISPLAY PAGE using pug
@@ -177,6 +164,39 @@ expressApp.get('/tutors', (req, res) => {
 		});
 		*/
 	});
+});
+
+//	EXPRESS - DISPLAY A SPECIFIC TUTOR
+expressApp.get('/tutors/:id/', (req, res) => {
+	const { id } = req.params;
+
+	//	GET ALL DATABASE ITEMS (tutor-application)
+	const tutors = mongo.getTutor(id)
+
+	tutors.then(function(result) {
+		console.log(result);
+
+		//	DISPLAY PAGE using pug
+		res.render('tutors', { tutors: [result]});
+
+		/*
+		//	DISPLAY PAGE using PREVIOUS METHOD (js, HTML)
+		fs.readFile(__dirname + '/tutors.html', (err, data) => {
+			if(err) 
+			{
+				res.status(404).end(JSON.stringify(err));
+			}	
+
+			res.setHeader('Content-Type', 'text/html');
+			res.status(200).end(createPage(data));
+		});
+		*/
+	});
+});
+
+//	ERROR PAGE MIDDLEWARE
+expressApp.use((err, req, res, next) => {
+	res.status(500).render('error');
 });
 
 /*
