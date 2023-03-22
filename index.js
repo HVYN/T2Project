@@ -20,15 +20,22 @@ const Auth0Strategy = require('passport-auth0');
 require('dotenv').config();
 
 //	AUTH0 ROUTER
-const authRouter = require('./auth');
+//	const authRouter = require('./auth');
 
 const http = require('http');
 const fs = require('fs');
-const { create } = require('domain');
+//	const { create } = require('domain');
 
 //	ADDRESS INFORMATION
 const host = 'localhost';
 const port = 8000;
+
+//	USING EXPRESS - LOAD STATIC FILES
+expressApp.use(express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+expressApp.use(express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+expressApp.use(express.static(__dirname + '/images'));
+expressApp.use(express.static(__dirname + '/favicon_io'));
+expressApp.use(express.static(__dirname + '/css'));
 
 /*
 //	ALL OF OUR ASSETS ARE HERE, INCLUDING IMAGES
@@ -191,19 +198,10 @@ passport.deserializeUser((user, done) => {
 	done(null, user);
 });
 
-expressApp.use('/', authRouter);
-
 //	EXPRESS START, LISTEN TO SPECIFIED HOST:PORT
 expressApp.listen(port, host, () => {
 	console.log(`EXPRESS RUNNING: http://${host}:${port}`)
 });
-
-//	USING EXPRESS - LOAD STATIC FILES
-expressApp.use(express.static(__dirname + '/node_modules/bootstrap/dist/css'));
-expressApp.use(express.static(__dirname + '/node_modules/bootstrap/dist/js'));
-expressApp.use(express.static(__dirname + '/images'));
-expressApp.use(express.static(__dirname + '/favicon_io'));
-expressApp.use(express.static(__dirname + '/css'));
 
 //	AUTHENTICATION MIDDLEWARE (EXPRESS)
 expressApp.use((req, res, next) => {
@@ -220,7 +218,6 @@ expressApp.get('/', (req, res) => {
 			res.status(404).end(JSON.stringify(err));
 		}	
 		
-
 		res.setHeader('Content-Type', 'text/html');
 		res.status(200).end(createPage(data));
 	})
@@ -313,6 +310,44 @@ expressApp.get('/reservations/:id', (req, res) => {
 		//	DISPLAY PAGE using pug
 		res.render('reservations', { reservations: result});
 	});
+});
+
+//	EXPRESS/AUTH0 - LOGIN
+expressApp.get('/login', passport.authenticate('auth0', {
+	scope: 'openid email profile'
+}),
+(req, res) => {
+	res.redirect('/');
+});
+
+//	EXPRESS/AUTH0 - CALLBACK
+expressApp.get('/callback', (req, res, next) => {
+	passport.authenticate('auth0', (err, user, info) => {
+		if(err) {
+			return next(err);
+		}
+
+		if(!user) {
+			return res.redirect('/login');
+		}
+
+		req.logIn(user, (err) => {
+			if(err) {
+				return next(err);
+			}
+
+			const returnTo = req.session.returnTo;
+			delete req.session.returnTo;
+
+			res.redirect(returnTo || '/');
+		});
+
+	})(req, res, next);
+});
+
+//	EXPRESS/AUTH0 - LOGOUT
+expressApp.get('/logout', (req, res) => {
+	req.logOut();
 });
 
 //	FLESH OUT ERROR CATCHING SYSTEM LATER
