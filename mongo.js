@@ -58,7 +58,6 @@ async function getTutor(id)
 		.findOne({ user_id: parseInt(id)});
 
 	// const tutorArray = await tutor.toArray();
-
 	// console.log(tutorArray)
 
 	return tutor;
@@ -99,3 +98,4 @@ async function listDatabases(client)
 exports.getAllTutors = getAllTutors;
 exports.getTutor = getTutor;
 exports.getAllReservations = getAllReservations;
+exports.getReservation = getReservation;

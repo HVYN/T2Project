@@ -5,6 +5,9 @@ const express = require('express');
 const expressSession = require('express-session');
 const expressApp = express();
 
+//	ROUTER FILE - CONTAINS ALL PATHS
+const mainRouter = require('./route');
+
 //	USING MONGODB (Mongoose)
 const mongo = require('./mongo');
 
@@ -210,106 +213,15 @@ expressApp.use((req, res, next) => {
 	next();
 })
 
-//	EXPRESS - HANDLE HOMEPAGE
-expressApp.get('/', (req, res) => {
-	/*
-	fs.readFile(__dirname + '/index.html', (err, data) => {
-		if(err) {
-			res.status(404).end(JSON.stringify(err));
-		}	
-		
-		res.setHeader('Content-Type', 'text/html');
-		res.status(200).end(createPage(data));
-	})
-	*/
+//	LOAD PATHS FROM ROUTER FILE
+expressApp.use('/', mainRouter);
+expressApp.use('/tutors', mainRouter);
+expressApp.use('/tutors/:id', mainRouter);
+expressApp.use('/reservations', mainRouter);
 
-	//	res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-
-	res.render('index');
-});
-
-//	EXPRESS / AUTH0
+//	EXPRESS / AUTH0 (TEST)
 expressApp.get('/profile', requiresAuth(), (req, res) => {
 	res.send(JSON.stringify(req.oidc.user));
-});
-
-//	EXPRESS - DISPLAY ALL TUTORS
-expressApp.get('/tutors', (req, res) => {
-	//	GET ALL TUTORS (tutor-application -> tutors)
-	const tutors = mongo.getAllTutors();
-
-	tutors.then(function(result) {
-		//	DISPLAY PAGE using pug
-		res.render('tutors', { tutors: result});
-
-		/*
-		//	DISPLAY PAGE using PREVIOUS METHOD (js, HTML)
-		fs.readFile(__dirname + '/tutors.html', (err, data) => {
-			if(err) 
-			{
-				res.status(404).end(JSON.stringify(err));
-			}	
-
-			res.setHeader('Content-Type', 'text/html');
-			res.status(200).end(createPage(data));
-		});
-		*/
-	});
-});
-
-//	EXPRESS - DISPLAY A SPECIFIC TUTOR
-expressApp.get('/tutors/:id', (req, res) => {
-	const { id } = req.params;
-
-	//	GET SPECIFIC TUTOR (tutor-application)
-	const tutor = mongo.getTutor(id);
-
-	tutor.then(function(result) {
-		console.log(result);
-
-		//	DISPLAY PAGE using pug
-		res.render('tutors', { tutors: [result]});
-
-		/*
-		//	DISPLAY PAGE using PREVIOUS METHOD (js, HTML)
-		fs.readFile(__dirname + '/tutors.html', (err, data) => {
-			if(err) 
-			{
-				res.status(404).end(JSON.stringify(err));
-			}	
-
-			res.setHeader('Content-Type', 'text/html');
-			res.status(200).end(createPage(data));
-		});
-		*/
-	});
-});
-
-//	EXPRESS - DISPLAY ALL RESERVATIONS
-expressApp.get('/reservations', (req, res) => {
-	//	GET ALL RESERVATIONS (tutor-application -> reservations)
-	const reservations = mongo.getAllReservations();
-
-	reservations.then(function(result) {
-		//	DISPLAY PAGE using pug
-		res.render('reservations', { reservations: result});
-	});
-
-});
-
-//	EXPRESS - DISPLAY SPECIFIC RESERVATION
-expressApp.get('/reservations/:id', (req, res) => {
-	const { number } = req.params;
-
-	//	GET SPECIFIC RESERVATION
-	const reservation = mongo.getAllReservations(number);
-
-	reservation.then(function(result) {
-		console.log(result);
-
-		//	DISPLAY PAGE using pug
-		res.render('reservations', { reservations: result});
-	});
 });
 
 //	EXPRESS/AUTH0 - LOGIN
