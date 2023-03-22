@@ -52,8 +52,7 @@ async function getAllTutors()
 //	TEST: DISPLAY A SPECIFIC TUTOR
 async function getTutor(id)
 {
-	console.log(typeof parseInt(id))
-
+	//	console.log(typeof parseInt(id))
 	const tutor = await mongoClient.db('tutor-application')
 		.collection('tutors')
 		.findOne({ user_id: parseInt(id)});
@@ -75,6 +74,16 @@ async function getAllReservations()
 	const reservationsArray = await reservations.toArray();
 
 	return reservationsArray;
+}
+
+//	TEST: DISPLAY SPECIFIC RESERVATION
+async function getReservation(id)
+{
+	const reservation = await mongoClient.db('tutor-application')
+		.collection('reservations')
+		.findOne({ number: parseInt(id)});
+
+	return reservation;
 }
 
 //	TEST: MONGODB STUFF - LIST ALL DATABASES

@@ -1,12 +1,26 @@
 // MAIN .JS FILE
 
-//	TEST: USING EXPRESS
+//	USING EXPRESS
 const express = require('express');
+const expressSession = require('express-session');
 const expressApp = express();
 
-//	TEST: USING MONGODB (Mongoose)
-// import { mongoInit } from './mongo.js';
+//	USING MONGODB (Mongoose)
 const mongo = require('./mongo');
+
+//	USING AUTH0
+const { auth } = require('express-openid-connect');
+const { requiresAuth } = require('express-openid-connect');
+
+//	PASSPORT.JS
+const passport = require('passport');
+const Auth0Strategy = require('passport-auth0');
+
+//	CONFIGURE .env / process.env
+require('dotenv').config();
+
+//	AUTH0 ROUTER
+const authRouter = require('./auth');
 
 const http = require('http');
 const fs = require('fs');
@@ -110,26 +124,95 @@ const requestListener = function (req, res) {
 };
 */
 
-//	TEST: SET TEMPLATE FILE DIRECTORY TO views
+//	CONFIG FOR AUTH0
+const config = {
+	authRequired: false,
+	auth0Logout: true,
+	secret: 'e059c36d6b0f159ab28a74835ca3267c52166cb39a8ae3f52c2192a539192bdd',
+	baseURL: 'http://localhost:8000',
+	clientID: process.env.AUTH0_CLIENT_ID,
+	issuerBaseURL: 'https://dev-fyszmjwlhy8ftgjv.us.auth0.com'
+  };
+
+/*
+  SESSION CONFIGURATION
+*/
+const session = {
+	secret: process.env.SESSION_SECRET,
+	cookie: {},
+	resave: false,
+	saveUnitialized: false
+};
+
+/*
+	PASSPORT CONFIGURATION
+*/
+const strategy = new Auth0Strategy(
+	{
+		domain: process.env.AUTH0_DOMAIN,
+		clientID: process.env.AUTH0_CLIENT_ID,
+		clientSecret: process.env.AUTH0_CLIENT_SECRET,
+		callbackURL: process.env.AUTH0_CALLBACK_URL
+	},
+
+	function(accessToken, refreshToken, extraParams, profile, done) {
+		return done(null, profile);
+	}
+);
+
+if(expressApp.get('env') === 'production')
+{
+	session.cookie.secure = true;
+}
+
+//	AUTH0 - ATTACHES /login, /logout, and /callback to baseURL
+expressApp.use(auth(config));
+
+//	SET TEMPLATE FILE DIRECTORY TO views
 expressApp.set('views', './views');
 
-//	TEST: SET VIEW ENGINE TO pug
+//	SET VIEW ENGINE TO pug
 expressApp.set('view engine', 'pug');
 
-//	TEST: EXPRESS STUFF
+//	EXPRESS SESSION
+expressApp.use(expressSession(session));
+
+//	SETUP PASSPORT
+passport.use(strategy);
+expressApp.use(passport.initialize());
+expressApp.use(passport.session());
+
+//	PASSPORT SERIALIZATION
+passport.serializeUser((user, done) => {
+	done(null, user);
+  });
+  
+passport.deserializeUser((user, done) => {
+	done(null, user);
+});
+
+expressApp.use('/', authRouter);
+
+//	EXPRESS START, LISTEN TO SPECIFIED HOST:PORT
 expressApp.listen(port, host, () => {
 	console.log(`EXPRESS RUNNING: http://${host}:${port}`)
 });
 
-//	TEST: USING EXPRESS - LOAD STATIC FILES (CSS)
+//	USING EXPRESS - LOAD STATIC FILES
 expressApp.use(express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 expressApp.use(express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 expressApp.use(express.static(__dirname + '/images'));
-//	Need to fix favicon not appearing 
 expressApp.use(express.static(__dirname + '/favicon_io'));
 expressApp.use(express.static(__dirname + '/css'));
 
-// TEST: EXPRESS - HANDLE HOMEPAGE
+//	AUTHENTICATION MIDDLEWARE (EXPRESS)
+expressApp.use((req, res, next) => {
+	res.locals.isAuthenticated = req.isAuthenticated();
+
+	next();
+})
+
+//	EXPRESS - HANDLE HOMEPAGE
 expressApp.get('/', (req, res) => {
 	/*
 	fs.readFile(__dirname + '/index.html', (err, data) => {
@@ -143,10 +226,17 @@ expressApp.get('/', (req, res) => {
 	})
 	*/
 
-	res.render('index');
-})
+	//	res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 
-// TEST: EXPRESS - DISPLAY ALL TUTORS
+	res.render('index');
+});
+
+//	EXPRESS / AUTH0
+expressApp.get('/profile', requiresAuth(), (req, res) => {
+	res.send(JSON.stringify(req.oidc.user));
+});
+
+//	EXPRESS - DISPLAY ALL TUTORS
 expressApp.get('/tutors', (req, res) => {
 	//	GET ALL TUTORS (tutor-application -> tutors)
 	const tutors = mongo.getAllTutors();
@@ -171,13 +261,13 @@ expressApp.get('/tutors', (req, res) => {
 });
 
 //	EXPRESS - DISPLAY A SPECIFIC TUTOR
-expressApp.get('/tutors/:id/', (req, res) => {
+expressApp.get('/tutors/:id', (req, res) => {
 	const { id } = req.params;
 
-	//	GET ALL DATABASE ITEMS (tutor-application)
-	const tutors = mongo.getTutor(id)
+	//	GET SPECIFIC TUTOR (tutor-application)
+	const tutor = mongo.getTutor(id);
 
-	tutors.then(function(result) {
+	tutor.then(function(result) {
 		console.log(result);
 
 		//	DISPLAY PAGE using pug
@@ -208,7 +298,22 @@ expressApp.get('/reservations', (req, res) => {
 		res.render('reservations', { reservations: result});
 	});
 
-})
+});
+
+//	EXPRESS - DISPLAY SPECIFIC RESERVATION
+expressApp.get('/reservations/:id', (req, res) => {
+	const { number } = req.params;
+
+	//	GET SPECIFIC RESERVATION
+	const reservation = mongo.getAllReservations(number);
+
+	reservation.then(function(result) {
+		console.log(result);
+
+		//	DISPLAY PAGE using pug
+		res.render('reservations', { reservations: result});
+	});
+});
 
 //	FLESH OUT ERROR CATCHING SYSTEM LATER
 //	ERROR PAGE TO CATCH BAD REQUESTS
