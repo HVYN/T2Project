@@ -1,0 +1,15 @@
+//  RESERVATIONS PAGE USING PUG
+//  NOTE: BE CAREFUL OF SPACING ISSUES WITH PUG
+
+html 
+    include ../header.html
+    body(style={background: '#bababa'})
+        .container
+            ul(class='list-group mt-1')
+                each reservation, i in reservations 
+                    li(class='list-group-item my-1')
+                        h5= `Tutor: ${reservation.tutor}`
+                        h5= `Student: ${reservation.student}`
+                        p= reservation.subject
+footer
+    include ../footer.html
