@@ -239,7 +239,10 @@ const secured = (req, res, next) => {
 //	EXPRESS / AUTH0 (TEST)
 //	NOTE: GUARDED, REQUIRE AUTHENTICATION TO ACCESS
 expressApp.get('/profile', requiresAuth(), (req, res) => {
-	res.render('profile');
+
+	console.log(req.oidc.user)
+	console.log(req.oidc.user.nickname)
+	res.render('profile', {user: req.oidc.user});
 });
 
 /*

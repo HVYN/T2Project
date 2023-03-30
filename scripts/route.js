@@ -10,19 +10,6 @@ const router = express.Router();
 
 //  ROUTE - HOMEPAGE
 router.get('/', (req, res) => {
-
-    //  OLD METHOD
-    /*
-	fs.readFile(__dirname + '/index.html', (err, data) => {
-		if(err) {
-			res.status(404).end(JSON.stringify(err));
-		}	
-		
-		res.setHeader('Content-Type', 'text/html');
-		res.status(200).end(createPage(data));
-	})
-	*/
-
     res.render('index');
 });
 
