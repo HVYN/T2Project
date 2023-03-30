@@ -1,17 +1,27 @@
-//  TEST: SIGN UP PAGE (TUTORS)
+// TUTOR SIGN UP PAGE
 
-html
-    head 
-        include ../header.html 
-    body(style={background: `#bababa`})
-            .container
-                form(method='POST' action='/signup')
-                    div(class='form-group')
-                        label(for='name') Name: 
-                        input(class='form-control' type='text' name='name')
-                    div(class='form-group')
-                        label(for='email') E-Mail: 
-                        input(class='form-control' type='email' name='email')
-                    button.btn.btn-primary(type='submit') Sign Up
-    footer 
-        include footer
+html 
+    include ../header.html
+    body(style={background: '#bababa'})
+        .container
+        form(method='POST' action='/tutorSignup')
+            div.form-group
+                label(for='name') Name:
+                input#name.form-control(type='text' placeholder='first and last' name='name')
+            div.form-group
+                label(for='email') Email:
+                input#email.form-control(type='email' placeholder='name@email.com' name='email')
+            div.form-group
+                //- implement a dropdown instead with Math, Science, Social Studies, English, etc.
+                label(for='subject') Subject(s):
+                input#subject.form-control(type='text' placeholder='preferred subject(s) to teach' name='subject')
+            div.form-group
+                label(for='pw') Password:
+                input#pw.form-control(type='password' placeholder='password' name='password')
+            div.form-group
+                label(for='pw2') Confirm Password:
+                input#pw2.form-control(type='password' placeholder='confirm password' name='confirmPassword')
+            button.btn.btn-primary(type='submit') Sign Up
+
+footer
+    include ../footer.html

@@ -224,7 +224,7 @@ expressApp.use((req, res, next) => {
 expressApp.use('/', mainRouter);
 expressApp.use('/tutors', mainRouter);
 expressApp.use('/tutors/:id', mainRouter);
-expressApp.use('/signup', mainRouter);
+expressApp.use('/tutorSignup', mainRouter);
 expressApp.use('/reservations', mainRouter);
 expressApp.use('/reservations/:id', mainRouter);
 

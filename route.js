@@ -10,10 +10,23 @@ const router = express.Router();
 
 //  ROUTE - HOMEPAGE
 router.get('/', (req, res) => {
+
+    //  OLD METHOD
+    /*
+	fs.readFile(__dirname + '/index.html', (err, data) => {
+		if(err) {
+			res.status(404).end(JSON.stringify(err));
+		}	
+		
+		res.setHeader('Content-Type', 'text/html');
+		res.status(200).end(createPage(data));
+	})
+	*/
+
     res.render('index');
 });
 
-//  ROUTE - TUTORS (DISPLAY ALL TUTORS)
+//  ROUTE - TUTORS (DISPLAY ALL TUTORS) Michael Michael
 router.get('/tutors', (req, res) => {
     const tutors = mongo.getAllTutors();
 
@@ -36,7 +49,74 @@ router.get('/tutors', (req, res) => {
 	});
 });
 
-//  ROUTE - TUTORS (DISPLAY A SPECIFIC TUTOR)
+//var tutor = require('../tutor');
+
+
+router.get('/tutorSignup', function(req, res, next) {
+	res.render('tutorSignup');
+});
+
+// POST /tutorsignup
+
+router.post('/tutorSignup', function(req, res, next) {
+	var name = req.body.name;
+	var email = req.body.email;
+	var subject = req.body.subject;
+	var pw = req.body.pw;
+	var pw2 = req.body.pw2;
+/*
+	// error if passwords do not match, rerenders signup page
+	if(pw!==pw2)
+	{	
+		//might want to make tutorSignup dupes with errors so you're not sent back to a blank form without knowing what's wrong
+		res.render(tutorSignup);
+	}
+*/
+	console.log(req.body);
+	res.render('index');
+});
+
+
+          
+ 
+
+
+
+
+
+
+/*
+//  ROUTE - TUTORS (display signup_)Michael
+router.get('/tutorsignup', function(req, res) {
+   // const tutors = mongo.getAllTutors();
+	res.render('tutorsignup', {tutorsignup: result});
+   // tutors.then(function(result) {
+		//	DISPLAY PAGE using pug
+	//	res.render('tutors', { tutors: result});
+
+		/*
+		//	DISPLAY PAGE using PREVIOUS METHOD (js, HTML)
+		fs.readFile(__dirname + '/tutors.html', (err, data) => {
+			if(err) 
+			{
+				res.status(404).end(JSON.stringify(err));
+			}	
+
+			res.setHeader('Content-Type', 'text/html');
+			res.status(200).end(createPage(data));
+		});
+		
+	});
+*/
+
+/*
+router.get('/handleForm', function(req, res){
+	res.send("Handle Form Page....");
+})
+
+*/
+
+//  ROUTE - TUTORS (DISPLAY A SPECIFIC TUTOR) Michael
 router.get('/tutors/:id', (req, res) => {
     const { id } = req.params;
 
@@ -64,18 +144,6 @@ router.get('/tutors/:id', (req, res) => {
 	});
 });
 
-//	ROUTE - TUTOR (SIGN UP PAGE)
-router.get('/signup', (req, res) => {
-	res.render('tutorSignup');
-});
-
-//	ROUTE - POST (TUTOR SIGN UP PAGE)
-router.post('/signup', (req, res) => {
-	console.log(req.body);
-
-	res.redirect('/')
-})
-
 //  ROUTE - RESERVATIONS (DISPLAY ALL RESERVATIONS)
 router.get('/reservations', (req, res) => {
     //	GET ALL RESERVATIONS (tutor-application -> reservations)
@@ -93,7 +161,7 @@ router.get('/reservations', (req, res) => {
 router.get('/reservations/:id', (req, res) => {
     const { id } = req.params;
 
-    //	console.log(id);
+    console.log(id);
 	//	GET SPECIFIC RESERVATION
 	const reservation = mongo.getReservation(id);
 
@@ -105,5 +173,5 @@ router.get('/reservations/:id', (req, res) => {
 	});
 });
 
-//  EXPORT - index.js CAN USE AS ROUTER
+//  EXPORT SO index.js CAN USE AS ROUTER
 module.exports = router;
