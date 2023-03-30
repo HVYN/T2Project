@@ -1,7 +1,8 @@
 //  INDEX PAGE (PUG)
 
-html 
-    include ../header.html
+html
+    head
+        include ../header.html
     body(style={background: '#bababa'})
         .container 
             div(class='row')
@@ -19,6 +20,5 @@ html
                     img(src='/orangeBg.png' class='d-block' style='width: 100vw; height: 95vh' alt='Second Slide')
                     div(class='carousel-caption')
                         h1= 'Welcome!'
-
-footer 
-    include ../footer.html
+    footer 
+        include footer

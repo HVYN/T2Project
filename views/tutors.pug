@@ -2,7 +2,8 @@
 //  NOTE: BE CAREFUL OF SPACING ISSUES WITH PUG
 
 html 
-    include ../header.html
+    head
+        include ../header.html
     body(style={background: '#bababa'})
         .container
             ul(class='list-group mt-1')
@@ -11,5 +12,5 @@ html
                         h5= tutor.name
                         p= tutor.subjects
                         // p= tutor.availability
-footer
-    include ../footer.html
+    footer
+        include footer
