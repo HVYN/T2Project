@@ -1,0 +1,17 @@
+//  TEST: SIGN UP PAGE (TUTORS)
+
+html
+    head 
+        include ../header.html 
+    body(style={background: `#bababa`})
+            .container
+                form(method='POST' action='/signup')
+                    div(class='form-group')
+                        label(for='name') Name: 
+                        input(class='form-control' type='text' name='name')
+                    div(class='form-group')
+                        label(for='email') E-Mail: 
+                        input(class='form-control' type='email' name='email')
+                    button.btn.btn-primary(type='submit') Sign Up
+    footer 
+        include footer

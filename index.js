@@ -1,44 +1,50 @@
-// MAIN .JS FILE
+//	MAIN .JS FILE
 
 //	USING EXPRESS
-const express = require('express');
-const expressSession = require('express-session');
-const expressApp = express();
+const express = require('express')
+const expressApp = express()
+
+const expressSession = require('express-session')
+
+const bodyParser = require('body-parser')
 
 //	ROUTER FILE - CONTAINS ALL PATHS
-const mainRouter = require('./route');
+const mainRouter = require('./route')
 
 //	USING MONGODB (Mongoose)
-const mongo = require('./mongo');
+const mongo = require('./mongo')
 
 //	USING AUTH0
-const { auth } = require('express-openid-connect');
-const { requiresAuth } = require('express-openid-connect');
+const { auth } = require('express-openid-connect')
+const { requiresAuth } = require('express-openid-connect')
 
 //	PASSPORT.JS
-const passport = require('passport');
-const Auth0Strategy = require('passport-auth0');
+const passport = require('passport')
+const Auth0Strategy = require('passport-auth0')
 
 //	CONFIGURE .env / process.env
-require('dotenv').config();
+require('dotenv').config()
 
 //	AUTH0 ROUTER
 //	const authRouter = require('./auth');
 
-const http = require('http');
-const fs = require('fs');
+const http = require('http')
+const fs = require('fs')
 //	const { create } = require('domain');
 
 //	ADDRESS INFORMATION
-const host = 'localhost';
-const port = 8000;
+const host = 'localhost'
+const port = 8000
 
 //	USING EXPRESS - LOAD STATIC FILES
-expressApp.use(express.static(__dirname + '/node_modules/bootstrap/dist/css'));
-expressApp.use(express.static(__dirname + '/node_modules/bootstrap/dist/js'));
-expressApp.use(express.static(__dirname + '/images'));
-expressApp.use(express.static(__dirname + '/favicon_io'));
-expressApp.use(express.static(__dirname + '/css'));
+expressApp.use(express.static('./node_modules/bootstrap/dist/css'))
+expressApp.use(express.static('./node_modules/bootstrap/dist/js'))
+expressApp.use(express.static('./images'))
+expressApp.use(express.static('./favicon_io'))
+expressApp.use(express.static('./css'))
+
+expressApp.use(bodyParser.json())
+expressApp.use(bodyParser.urlencoded({ extended: false }))
 
 /*
 //	ALL OF OUR ASSETS ARE HERE, INCLUDING IMAGES
@@ -151,7 +157,7 @@ const session = {
 	secret: process.env.SESSION_SECRET,
 	cookie: {},
 	resave: false,
-	saveUnitialized: false
+	saveUninitialized: false
 };
 
 /*
@@ -204,6 +210,7 @@ passport.deserializeUser((user, done) => {
 //	EXPRESS START, LISTEN TO SPECIFIED HOST:PORT
 expressApp.listen(port, host, () => {
 	console.log(`EXPRESS RUNNING: http://${host}:${port}`)
+	console.log(__dirname);
 });
 
 //	AUTHENTICATION MIDDLEWARE (EXPRESS)
@@ -217,12 +224,40 @@ expressApp.use((req, res, next) => {
 expressApp.use('/', mainRouter);
 expressApp.use('/tutors', mainRouter);
 expressApp.use('/tutors/:id', mainRouter);
+expressApp.use('/signup', mainRouter);
 expressApp.use('/reservations', mainRouter);
+expressApp.use('/reservations/:id', mainRouter);
+
+/*
+	SECURE MIDDLEWARE TO FORCE LOGIN WHEN
+	ACCESSING SENSITIVE AREAS
+
+const secured = (req, res, next) => {
+	if (req.user) {
+		return next();
+	}
+
+	req.session.returnTo = req.originalUrl;
+	res.redirect('/login');
+}
+*/
 
 //	EXPRESS / AUTH0 (TEST)
+//	NOTE: GUARDED, REQUIRE AUTHENTICATION TO ACCESS
 expressApp.get('/profile', requiresAuth(), (req, res) => {
-	res.send(JSON.stringify(req.oidc.user));
+
+	console.log(req.oidc.user)
+	console.log(req.oidc.user.nickname)
+	res.render('profile', {user: req.oidc.user});
 });
+
+/*
+expressApp.get('/user', secured, (req, res, next) => {
+	const { _raw, _json, ...userProfile } = req.user;
+
+	res.send(userProfile);
+});
+*/
 
 //	EXPRESS/AUTH0 - LOGIN
 expressApp.get('/login', passport.authenticate('auth0', {
@@ -271,6 +306,8 @@ expressApp.all('*', function(req, res) {
 
 //	ERROR PAGE MIDDLEWARE
 expressApp.use((err, req, res, next) => {
+	console.log(err);
+
 	res.render('error');
 });
 
