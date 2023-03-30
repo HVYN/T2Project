@@ -225,6 +225,7 @@ expressApp.use('/', mainRouter);
 expressApp.use('/tutors', mainRouter);
 expressApp.use('/tutors/:id', mainRouter);
 expressApp.use('/tutorSignup', mainRouter);
+expressApp.use('/newRes', mainRouter);
 expressApp.use('/reservations', mainRouter);
 expressApp.use('/reservations/:id', mainRouter);
 
