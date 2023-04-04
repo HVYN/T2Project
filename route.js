@@ -25,6 +25,45 @@ router.get('/', (req, res) => {
 
     res.render('index');
 });
+router.get('/newRes', function(req, res, next) {
+	res.render('newRes');
+});
+
+// POSt /newRes
+router.post('/newRes', function(req, res, next) {
+	var name = req.body.name;
+	var subject = req.body.subject;
+	var date = req.body.date;
+	var time = req.body.time;
+	console.log(req.body);
+	res.render('index');
+});
+
+
+
+router.get('/tutorSignup', function(req, res, next) {
+	res.render('tutorSignup');
+});
+
+// POST /tutorsignup
+
+router.post('/tutorSignup', function(req, res, next) {
+	var name = req.body.name;
+	var email = req.body.email;
+	var subject = req.body.subject;
+	var pw = req.body.pw;
+	var pw2 = req.body.pw2;
+/*
+	// error if passwords do not match, rerenders signup page
+	if(pw!==pw2)
+	{	
+		//might want to make tutorSignup dupes with errors so you're not sent back to a blank form without knowing what's wrong
+		res.render(tutorSignup);
+	}
+*/
+	console.log(req.body);
+	res.render('index');
+});
 
 //  ROUTE - TUTORS (DISPLAY ALL TUTORS)
 router.get('/tutors', (req, res) => {
