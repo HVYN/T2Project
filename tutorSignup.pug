@@ -23,14 +23,14 @@ html
             label.control-label.requiredField(for='subject') Subject:
                 span.asteriskField 
                 .col-xs-12
-                select#subject.select.form-control.input-lg(form='subject', type='subject' name='subject')
+                select#subject.select.form-control.input-lg(for ='subject', type='subject' name='subject')
                     option(value='0', subject= true) -- Select from Options --
-                    option(value='1') Mathematics
-                    option(value='2') Sciences
-                    option(value='3') History and Social Studies
-                    option(value='4') English
-                    option(value='5') Computer Programming
-                    option(value='6') Arts
+                    option(value='Mathematics') Mathematics
+                    option(value='Sciences') Sciences
+                    option(value='History and Social Studies') History and Social Studies
+                    option(value='English') English
+                    option(value='Computer Programming') Computer Programming
+                    option(value='Arts') Arts
             div.form-group
                 label.control-label.requiredField(for='specialities') Specialites within subject:
                 input#specialties.form-control(type='specialties' placeholder='Trigonometry, Biology, etc' name='specialities')
