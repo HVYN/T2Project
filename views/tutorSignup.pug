@@ -1,0 +1,46 @@
+// TUTOR SIGN UP PAGE
+
+html 
+    include ../header.html
+    body(style={background: '#bababa'})
+        .container
+        form(method='POST' action='/tutorSignup')
+            div.form-group
+                label.control-label.requiredField(for='name') Name:
+                input#name.form-control(type='text' placeholder='First and Last Name' name='name')
+            div.form-group
+                label.control-label.requiredField(for='email') Email:
+                input#email.form-control(type='email' placeholder='example@email.com' name='email')
+            //div.form-group
+                //- implement a dropdown instead with Math, Science, Social Studies, English, etc.
+                label(for='subject') Subject(s):
+                input#subject.form-control(type='text' placeholder='preferred subject(s) to teach' name='subject')
+            //div.form-group  
+                -var subjects = ['Mathematics', 'Sciences', 'History and Social Studies', 'English', 'Computer Programming', 'Arts']  
+                select(type='text', id='subject')
+                    for subjects in subjects 
+                        option(value = subjects.id)      
+            label.control-label.requiredField(for='subject') Subject:
+                span.asteriskField 
+                .col-xs-12
+                select#subject.select.form-control.input-lg(for ='subject', type='subject' name='subject')
+                    option(value='0', subject= true) -- Select from Options --
+                    option(value='Mathematics') Mathematics
+                    option(value='Sciences') Sciences
+                    option(value='History and Social Studies') History and Social Studies
+                    option(value='English') English
+                    option(value='Computer Programming') Computer Programming
+                    option(value='Arts') Arts
+            div.form-group
+                label.control-label.requiredField(for='specialities') Specialites within subject:
+                input#specialties.form-control(type='specialties' placeholder='Trigonometry, Biology, etc' name='specialities')
+            div.form-group
+                label.control-label.requiredField(for='pw') Password:
+                input#pw.form-control(type='password' placeholder='Password' name='password')
+            div.form-group
+                label.control-label.requiredField(for='pw2') Confirm Password:
+                input#pw2.form-control(type='password' placeholder='Passwords must match.' name='confirmPassword')
+            button.btn.btn-primary(type='submit') Sign Up
+
+footer
+    include ../footer.html
