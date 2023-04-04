@@ -6,6 +6,7 @@
     "express-openid-connect": "^2.12.1",
     "express-session": "^1.17.3",
     "mongodb": "^5.1.0",
+    "mongoose": "^7.0.3",
     "passport": "^0.6.0",
     "passport-auth0": "^1.4.3",
     "pug": "^3.0.2"

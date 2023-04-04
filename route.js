@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
-//  ROUTE - TUTORS (DISPLAY ALL TUTORS)
+//  ROUTE - TUTORS (DISPLAY ALL TUTORS) Michael Michael
 router.get('/tutors', (req, res) => {
     const tutors = mongo.getAllTutors();
 
@@ -48,22 +48,8 @@ router.get('/tutors', (req, res) => {
 		*/
 	});
 });
-// New Reservation
 
-router.get('/newRes', function(req, res, next) {
-	res.render('newRes');
-});
-
-// POSt /newRes
-router.post('/newRes', function(req, res, next) {
-	var name = req.body.name;
-	var subject = req.body.subject;
-	var date = req.body.date;
-	var time = req.body.time;
-	console.log(req.body);
-	res.render('index');
-});
-
+//var tutor = require('../tutor');
 
 
 router.get('/tutorSignup', function(req, res, next) {
@@ -78,6 +64,7 @@ router.post('/tutorSignup', function(req, res, next) {
 	var subject = req.body.subject;
 	var pw = req.body.pw;
 	var pw2 = req.body.pw2;
+	var specialties = req.body.specialties;
 /*
 	// error if passwords do not match, rerenders signup page
 	if(pw!==pw2)
@@ -91,7 +78,46 @@ router.post('/tutorSignup', function(req, res, next) {
 });
 
 
-//  ROUTE - TUTORS (DISPLAY A SPECIFIC TUTOR)
+          
+ 
+
+
+
+
+
+
+/*
+//  ROUTE - TUTORS (display signup_)Michael
+router.get('/tutorsignup', function(req, res) {
+   // const tutors = mongo.getAllTutors();
+	res.render('tutorsignup', {tutorsignup: result});
+   // tutors.then(function(result) {
+		//	DISPLAY PAGE using pug
+	//	res.render('tutors', { tutors: result});
+
+		/*
+		//	DISPLAY PAGE using PREVIOUS METHOD (js, HTML)
+		fs.readFile(__dirname + '/tutors.html', (err, data) => {
+			if(err) 
+			{
+				res.status(404).end(JSON.stringify(err));
+			}	
+
+			res.setHeader('Content-Type', 'text/html');
+			res.status(200).end(createPage(data));
+		});
+		
+	});
+*/
+
+/*
+router.get('/handleForm', function(req, res){
+	res.send("Handle Form Page....");
+})
+
+*/
+
+//  ROUTE - TUTORS (DISPLAY A SPECIFIC TUTOR) Michael
 router.get('/tutors/:id', (req, res) => {
     const { id } = req.params;
 
