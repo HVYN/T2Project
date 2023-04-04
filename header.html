@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <!--
 	HEADER FILE
 
@@ -96,3 +97,103 @@
 	  </div>
 	</div>
   </div>
+=======
+<!--
+	HEADER FILE
+
+	(Migrate to .pug format in the future)
+-->
+<head>
+	<meta charset="utf-8" />
+	<title>Smarties</title>
+	<link rel="stylesheet" href="/bootstrap.min.css" />
+	<link rel="stylesheet" href="/custom.css"/>
+	<script src="bootstrap.min.js"></script>
+
+	<!-- NAVBAR -->
+	<div id="navbar">
+		<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+			<div class="container">
+				<a class="navbar-brand" href="/">
+					<img src="/logo.png" width="30" height="30">
+					Smarties
+				</a>
+
+				<div class="collapse navbar-collapse">
+					<div class="navbar-nav me-auto">
+						<a class="nav-item nav-link" href="/tutors">Tutors</a>
+						<a class="nav-item nav-link" href="/reservations">Reservations</a>	
+					</div>
+				</div>
+
+				<!-- Two buttons justify towards the right side -->
+				<div class="text-right">
+					<!-- TUTOR SIGNUP BUTTON -->
+					<a type="button" class="btn btn-sm btn-primary active mx-1" style="background-color: #ff7b3c" href="/tutorSignup">
+						Become a Tutor
+					</a>
+
+					<!-- RESERVATION CREATION BUTTON -->
+					<a type="button" class="btn btn-sm btn-primary active mx-1" style="background-color: #ff7b3c" href="/newRes">
+						Make a Reservation
+					</a>
+				</div>
+				
+				<!--
+					<button type="button" class="btn btn-secondary">Change Color</button>
+				-->
+			</div>	
+		</nav>
+	</div>
+</head>
+
+<!-- 
+	RESERVATION MODAL 
+
+	Stays outside of main header, else it'll be greyed out with the rest of the page.
+-->
+<div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content bg-dark">
+		<div class="modal-header" data-bs-theme="dark" style="border: none">
+		  <h5 class="modal-title" id="exampleModalLabel" style="color: white">Make a Reservation</h5>
+		  <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close">
+		  </button>
+		</div>
+		<div class="modal-body" style="color: white">
+		  ...
+		  <div class="container">
+			<div class="text-center">
+				<button type="button" class="btn btn-primary" style="background-color: #ff7b3c">Submit</button>
+			</div>
+		</div>
+		</div>
+	  </div>
+	</div>
+  </div>
+
+<!-- 
+	TUTOR MODAL 
+
+	Stays outside of main header, else it'll be greyed out with the rest of the page.
+-->
+  <div class="modal fade" id="tutorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content bg-dark">
+		<div class="modal-header" data-bs-theme="dark" style="border: none">
+		  <h5 class="modal-title" id="exampleModalLabel" style="color: white">Sign up to be a Tutor!</h5>
+		  <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close">
+		  </button>
+		</div>
+		<div class="modal-body" style="color: white">
+		  ...
+		  <div class="container">
+			<div class="text-center">
+				<button type="button" class="btn btn-primary" style="background-color: #ff7b3c">Submit</button>
+			</div>
+		</div>
+		</div>
+	  </div>
+	</div>
+  </div>
+>>>>>>> Stashed changes

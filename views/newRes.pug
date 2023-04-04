@@ -1,0 +1,24 @@
+// New Reservation
+
+html 
+    include ../header.html
+    body(style={background: '#bababa'})
+        .container
+        form(method='POST' action='/newRes')
+            div.form-group
+                label(for='tutor') Tutor:
+                input#name.form-control(type='text' placeholder='first and last' name='tutor')
+            div.form-group
+                //- implement a dropdown instead with Math, Science, Social Studies, English, etc.
+                label(for='subject') Subject(s):
+                input#subject.form-control(type='text' placeholder='preferred subject(s) to teach' name='subject')
+            div.form-group
+                label(for='date') Date:
+                input#date.form-control(type='date' placeholder='preferred date' name='date')
+            div.form-group
+                label(for='time') Time:
+                input#time.form-control(type='time' placeholder='preferred time' name='time')
+            button.btn.btn-primary(type='submit') Done 
+
+footer
+    include ../footer.html
