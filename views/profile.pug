@@ -1,0 +1,14 @@
+//  PROFILE PAGE (DISPLAY USER INFO TO USER)
+//  NOTE: MUST BE GUARDED, REQUIRE AUTHENTICATION
+
+html 
+    head 
+        include ../header.html 
+    body(style={background: '#bababa'})
+        .container
+            div(class='d-block h-auto w-auto mt-5' style={background: 'white'})
+                h1(class='py-3 ps-3') #{user.nickname}
+                h1(class='py-3 ps-3') #{user.name}
+                h1(class='py-3 ps-3') #{user.username}
+    footer 
+        include footer 
