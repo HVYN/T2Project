@@ -8,7 +8,13 @@ html
         .container
             div(class='d-block h-auto w-auto mt-5' style={background: 'white'})
                 h1(class='py-3 ps-3') #{user.nickname}
-                h1(class='py-3 ps-3') #{user.name}
-                h1(class='py-3 ps-3') #{user.username}
+                // h1(class='py-3 ps-3') #{user.name}
+                // h1(class='py-3 ps-3') #{user.username}
+                pre=JSON.stringify(user, null, 4)
+                div.form-group.m-3
+                    label.control-label.requiredField(for='name') Display Name:
+                    input#name.form-control(type='text' placeholder='First and Last Name' name='name')
+                a(type='button' class='btn btn-sm btn-primary active mx-2 my-2' href='/privateButton') PRIVATE
+                a(type='button' class='btn btn-sm btn-primary active mx-2 my-2' href='/displayUsers') TEST USERS API ENDPOINT
     footer 
         include footer 

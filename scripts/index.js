@@ -4,7 +4,7 @@
 const express = require('express')
 const expressApp = express()
 
-const expressSession = require('express-session')
+//	const expressSession = require('express-session')
 
 const bodyParser = require('body-parser')
 
@@ -15,11 +15,11 @@ const mainRouter = require('./route')
 const mongo = require('./mongo')
 
 //	USING AUTH0
-const { auth } = require('express-openid-connect')
+//	const { auth } = require('express-openid-connect')
 
 //	PASSPORT.JS
-const passport = require('passport')
-const Auth0Strategy = require('passport-auth0')
+//	const passport = require('passport')
+//	const Auth0Strategy = require('passport-auth0')
 
 //	CONFIGURE .env / process.env
 require('dotenv').config()
@@ -27,8 +27,8 @@ require('dotenv').config()
 //	AUTH0 ROUTER
 //	const authRouter = require('./auth');
 
-const http = require('http')
-const fs = require('fs')
+//	const http = require('http')
+//	const fs = require('fs')
 //	const { create } = require('domain');
 
 //	ADDRESS INFORMATION
@@ -46,122 +46,31 @@ expressApp.use(bodyParser.json())
 expressApp.use(bodyParser.urlencoded({ extended: false }))
 
 /*
-//	ALL OF OUR ASSETS ARE HERE, INCLUDING IMAGES
-const ASSETS = {
-	'bootstrap.min.css': { url: '/node_modules/bootstrap/dist/css/bootstrap.min.css', type: 'text/css' },
-	'bootstrap.min.css.map': { url: '/node_modules/bootstrap/dist/css/bootstrap.min.css.map', type: 'application/json' },
-	'bootstrap.min.js': { url: '/node_modules/bootstrap/dist/js/bootstrap.min.js', type: 'text/javascript' },
-	'bootstrap.min.js.map': { url: '/node_modules/bootstrap/dist/js/bootstrap.min.js.map', type: 'application/json' },
-	'logo.png' : { url: '/images/logo.png', type: 'image/png'},
-	'favicon.ico': { url: '/favicon_io/favicon.ico', type: 'image/x-icon' },
-	'stockphoto.png' : { url: '/images/stockphoto.png', type: 'image/png'},
-	'grayBg.png' : {url: '/images/grayBg.png', type: 'image/png'},
-	'orangeBg.png' : {url: '/images/orangeBg.png', type: 'image/png'},
-	'custom.css' : {url: '/custom.css', type: 'text/css'},
-	'transparent.png': {url: '/transparent.png', type: 'image/png'}
-};
-*/
-
-/*
-//	CREATEPAGE ALWAYS LOADS FOOTER AND HEADER
-//	THE ACTUAL PAGE WILL BE LOADED AS NEEDED
-function createPage(content) 
-{
-	let header = fs.readFileSync(__dirname + '/header.html', 'utf8');
-	let footer = fs.readFileSync(__dirname + '/footer.html', 'utf8');
-
-	let page = `<!DOCTYPE html><html>
-				${header}${content}${footer}
-				</html>`;
-	page = page.replaceAll('{{dir}}', __dirname);
-	return page;
-}
-*/
-
-/*
-//	WHAT THE USER CLICKS ON, THEIR 'REQUESTS' ARE SENT HERE TO BE
-//	INTERPRETED, AND REDIRECTED
-const requestListener = function (req, res) {
-	let url = req.url.substring(1);
-
-	//	IF THE PAGE NEEDS SOMETHING FORM ASSETS (LIKE AN IMAGE)
-	if (url in ASSETS) {
-		let asset = ASSETS[url];
-		fs.readFile(__dirname + asset.url, (err, data) => {
-			if (err) {
-				res.writeHead(404);
-				res.end(JSON.stringify(err));
-				return;
-			}
-			res.setHeader('Content-Type', asset.type);
-			res.writeHead(200);
-			res.end(data);
-		});
-		return;
-	}
-
-	//	IF USER IS TRYING TO REACH TUTORS PAGE
-	if (url == 'tutors.html')
-	{
-		fs.readFile(__dirname + '/tutors.html', (err, data) => {
-			if (err)
-			{
-				res.writeHead(404);
-				res.end(JSON.stringify(err));
-				return;
-			}
-			res.setHeader('Content-Type', 'text/html');
-			res.writeHead(200);
-			res.end(createPage(data));
-		});
-		return;
-	}
-
-	//	HOMEPAGE; IF NO SPECIFIC .HTML PAGE, THEN IT'S
-	//	ALSO HOMEPAGE
-	if (url == '' || url == 'index.html') {
-		fs.readFile(__dirname + '/index.html', (err, data) => {
-			if (err) {
-				res.writeHead(404);
-				res.end(JSON.stringify(err));
-				return;
-			}
-			res.setHeader('Content-Type', 'text/html');
-			res.writeHead(200);
-			res.end(createPage(data));
-		});
-		return;
-	}
-
-	//	IF AN UNKNOWN RESOURCE IS REQUESTED, PRINT
-	//	TO CONSOLE
-	console.log(`Unknown url: "${url}"`);
-};
-*/
-
 //	CONFIG FOR AUTH0
 const config = {
 	authRequired: false,
 	auth0Logout: true,
-	secret: 'e059c36d6b0f159ab28a74835ca3267c52166cb39a8ae3f52c2192a539192bdd',
+	secret: process.env.SESSION_SECRET,
 	baseURL: 'http://localhost:8000',
 	clientID: process.env.AUTH0_CLIENT_ID,
 	issuerBaseURL: 'https://dev-fyszmjwlhy8ftgjv.us.auth0.com'
-  };
+};
+*/
 
 /*
   SESSION CONFIGURATION
-*/
+
 const session = {
 	secret: process.env.SESSION_SECRET,
 	cookie: {},
 	resave: false,
 	saveUninitialized: false
 };
+*/
 
 /*
 	PASSPORT CONFIGURATION
-*/
+
 const strategy = new Auth0Strategy(
 	{
 		domain: process.env.AUTH0_DOMAIN,
@@ -171,9 +80,11 @@ const strategy = new Auth0Strategy(
 	},
 
 	function(accessToken, refreshToken, extraParams, profile, done) {
+		console.log(accessToken)
 		return done(null, profile);
 	}
 );
+*/
 
 if(expressApp.get('env') === 'production')
 {
@@ -181,7 +92,7 @@ if(expressApp.get('env') === 'production')
 }
 
 //	AUTH0 - ATTACHES /login, /logout, and /callback to baseURL
-expressApp.use(auth(config));
+//	expressApp.use(auth(config));
 
 //	SET TEMPLATE FILE DIRECTORY TO views
 expressApp.set('views', './views');
@@ -190,9 +101,10 @@ expressApp.set('views', './views');
 expressApp.set('view engine', 'pug');
 
 //	EXPRESS SESSION
-expressApp.use(expressSession(session));
+//	expressApp.use(expressSession(session));
 
 //	SETUP PASSPORT
+/*
 passport.use(strategy);
 expressApp.use(passport.initialize());
 expressApp.use(passport.session());
@@ -205,19 +117,21 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
 	done(null, user);
 });
+*/
 
 //	EXPRESS START, LISTEN TO SPECIFIED HOST:PORT
 expressApp.listen(port, host, () => {
 	console.log(`EXPRESS RUNNING: http://${host}:${port}`)
-	console.log(__dirname);
 });
 
 //	AUTHENTICATION MIDDLEWARE (EXPRESS)
+/*
 expressApp.use((req, res, next) => {
 	res.locals.isAuthenticated = req.isAuthenticated();
 
 	next();
 })
+*/
 
 //	LOAD PATHS FROM ROUTER FILE
 expressApp.use('/', mainRouter);
@@ -231,26 +145,12 @@ expressApp.use('/callback', mainRouter);
 expressApp.use('/logout', mainRouter);
 expressApp.use('/profile', mainRouter);
 
-/*
-	SECURE MIDDLEWARE TO FORCE LOGIN WHEN
-	ACCESSING SENSITIVE AREAS
-
-const secured = (req, res, next) => {
-	if (req.user) {
-		return next();
-	}
-
-	req.session.returnTo = req.originalUrl;
-	res.redirect('/login');
-}
-*/
-
-/*
-expressApp.get('/user', secured, (req, res, next) => {
-	const { _raw, _json, ...userProfile } = req.user;
-
-	res.send(userProfile);
-});
+//	API TEST
+/* expressApp.get('/api/public', function(req, res) {
+	res.json({
+		message: '(TESTING)'
+	})
+})
 */
 
 //	FLESH OUT ERROR CATCHING SYSTEM LATER
