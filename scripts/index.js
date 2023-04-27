@@ -1,18 +1,18 @@
 //	MAIN .JS FILE
 
 //	USING EXPRESS
-const express = require('express')
-const expressApp = express()
+const express = require('express');
+const expressApp = express();
 
 //	const expressSession = require('express-session')
 
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 //	ROUTER FILE - CONTAINS ALL PATHS
-const mainRouter = require('./route')
+const mainRouter = require('./route');
 
 //	USING MONGODB (Mongoose)
-const mongo = require('./mongo')
+const mongo = require('./mongo');
 
 //	USING AUTH0
 //	const { auth } = require('express-openid-connect')
@@ -22,7 +22,7 @@ const mongo = require('./mongo')
 //	const Auth0Strategy = require('passport-auth0')
 
 //	CONFIGURE .env / process.env
-require('dotenv').config()
+require('dotenv').config();
 
 //	AUTH0 ROUTER
 //	const authRouter = require('./auth');
@@ -32,18 +32,18 @@ require('dotenv').config()
 //	const { create } = require('domain');
 
 //	ADDRESS INFORMATION
-const host = 'localhost'
-const port = 8000
+const host = 'localhost';
+const port = 8000;
 
 //	USING EXPRESS - LOAD STATIC FILES
-expressApp.use(express.static('./node_modules/bootstrap/dist/css'))
-expressApp.use(express.static('./node_modules/bootstrap/dist/js'))
-expressApp.use(express.static('./images'))
-expressApp.use(express.static('./favicon_io'))
-expressApp.use(express.static('./css'))
+expressApp.use(express.static('./node_modules/bootstrap/dist/css'));
+expressApp.use(express.static('./node_modules/bootstrap/dist/js'));
+expressApp.use(express.static('./images'));
+expressApp.use(express.static('./favicon_io'));
+expressApp.use(express.static('./css'));
 
-expressApp.use(bodyParser.json())
-expressApp.use(bodyParser.urlencoded({ extended: false }))
+expressApp.use(bodyParser.json());
+expressApp.use(bodyParser.urlencoded({ extended: false }));
 
 /*
 //	CONFIG FOR AUTH0
@@ -86,8 +86,7 @@ const strategy = new Auth0Strategy(
 );
 */
 
-if(expressApp.get('env') === 'production')
-{
+if (expressApp.get('env') === 'production') {
 	session.cookie.secure = true;
 }
 
@@ -121,7 +120,7 @@ passport.deserializeUser((user, done) => {
 
 //	EXPRESS START, LISTEN TO SPECIFIED HOST:PORT
 expressApp.listen(port, host, () => {
-	console.log(`EXPRESS RUNNING: http://${host}:${port}`)
+	console.log(`EXPRESS RUNNING: http://${host}:${port}`);
 });
 
 //	AUTHENTICATION MIDDLEWARE (EXPRESS)
@@ -155,9 +154,8 @@ expressApp.use('/profile', mainRouter);
 
 //	FLESH OUT ERROR CATCHING SYSTEM LATER
 //	ERROR PAGE TO CATCH BAD REQUESTS
-expressApp.all('*', function(req, res) {
+expressApp.all('*', function (req, res) {
 	res.render('error');
-
 });
 
 //	ERROR PAGE MIDDLEWARE
