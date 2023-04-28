@@ -89,12 +89,16 @@ router.get('/newRes', function (req, res, next) {
 
 // POST /newRes (Ilhaam S.)
 router.post('/newRes', function (req, res, next) {
-	var name = req.body.name;
-	var subject = req.body.subject;
-	var date = req.body.date;
-	var time = req.body.time;
+	var res1={
+		name: req.body.name,
+		subject: req.body.subject,
+		date: req.body.date,
+		time: req.body.time
+	}
 	console.log(req.body);
-	res.render('index');
+	
+	mongo.newReservation(res1)
+	res.redirect('/reservations');
 });
 
 //	TUTORSIGN UP GET REQ (MICHAEL U.)

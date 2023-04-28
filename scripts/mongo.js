@@ -93,9 +93,15 @@ async function listDatabases(client)
 	console.log(databasesList.databases);
 
 }
+async function newReservation(res){
+	mongoClient.db('tutor-application')
+		.collection('reservations')
+		.insertOne(res);
+}
 
 //  EXPORT THIS SO IT'S USABLE BY index.js
 exports.getAllTutors = getAllTutors;
 exports.getTutor = getTutor;
 exports.getAllReservations = getAllReservations;
 exports.getReservation = getReservation;
+exports.newReservation = newReservation;
