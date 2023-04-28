@@ -15,18 +15,18 @@ html
         form(method='POST' action='/newRes')
             div(class = 'd-flex flex-column newResContainer border border-primary rounded')
                 div.form-group
+                    label(for='student') Student:
+                    input#student.form-control(type='text' placeholder='Enter student email' name='student' required)
+                div.form-group
                     label(for='tutor') Tutor:
-                    input#name.form-control(type='text' placeholder='first and last' name='tutor')
+                    input#tutor.form-control(type='text' placeholder='first and last' name='tutor' required)
                 div.form-group
                     //- implement a dropdown instead with Math, Science, Social Studies, English, etc.
                     label(for='subject') Subject(s):
-                    input#subject.form-control(type='text' placeholder='Subject' name='subject')
-                div.form-group
-                    label(for='date') Date:
-                    input#date.form-control(type='date' placeholder='preferred date' name='date')
+                    input#subject.form-control(type='text' placeholder='Subject' name='subject' required)
                 div.form-group
                     label(for='time') Time:
-                    input#time.form-control(type='time' placeholder='preferred time' name='time')
+                    input#time.form-control(type='datetime-local' placeholder='preferred date' name='time' required)
                 button.btn.btn-primary(type='submit') Done 
 
 footer

@@ -90,10 +90,10 @@ router.get('/newRes', function (req, res, next) {
 // POST /newRes (Ilhaam S.)
 router.post('/newRes', function (req, res, next) {
 	var res1={
-		name: req.body.name,
+		student: req.body.student,
+		tutor: req.body.tutor,
 		subject: req.body.subject,
-		date: req.body.date,
-		time: req.body.time
+		time: req.body.datetime,
 	}
 	console.log(req.body);
 	
